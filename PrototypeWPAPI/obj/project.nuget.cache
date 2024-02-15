@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "R0S12le+yQaWhtD4zMam43hQKureEbx1/asmekO/c3HXVAqG7ACguziQFksrJUmHrE0dyy/k5SNwt6hZrdQ4Og==",
+  "dgSpecHash": "N8fzF7Ob9O/QMS6FlnoeBlQAn9oGDiVZETJPcqp47wkMPuwdYuQ7TKSwlFzgmfkGDizmykO+kZNm58bV+AniNg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Micah\\RiderProjects\\PrototypeWPAPI\\PrototypeWPAPI\\PrototypeWPAPI.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Micah\\.nuget\\packages\\geolocation\\1.2.1\\geolocation.1.2.1.nupkg.sha512",
     "C:\\Users\\Micah\\.nuget\\packages\\microsoft.aspnet.webapi.client\\6.0.0\\microsoft.aspnet.webapi.client.6.0.0.nupkg.sha512",
     "C:\\Users\\Micah\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\Micah\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",

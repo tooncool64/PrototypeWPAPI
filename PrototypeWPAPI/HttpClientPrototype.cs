@@ -1,52 +1,14 @@
-﻿namespace PrototypeWPAPI
-{
-    using Newtonsoft.Json;
+﻿using Geolocation;
 
-    public partial class Locations
-    {
-        [JsonProperty("batchcomplete")]
-        public string Batchcomplete { get; set; }
-
-        [JsonProperty("query")]
-        public Query Query { get; set; }
-    }
-
-    public partial class Query
-    {
-        [JsonProperty("geosearch")]
-        public Geosearch[] Geosearch { get; set; }
-    }
-
-    public partial class Geosearch
-    {
-        [JsonProperty("pageid")]
-        public long Pageid { get; set; }
-
-        [JsonProperty("ns")]
-        public long Ns { get; set; }
-
-        [JsonProperty("title")]
-        public string Title { get; set; }
-
-        [JsonProperty("lat")]
-        public double Lat { get; set; }
-
-        [JsonProperty("lon")]
-        public double Lon { get; set; }
-
-        [JsonProperty("dist")]
-        public double Dist { get; set; }
-
-        [JsonProperty("primary")]
-        public string Primary { get; set; }
-    }
-
-    public class WikipediaApi
-    {
-        public static Locations GetLocations(int limit, int kmRad, double lat, double lon)
+namespace PrototypeWPAPI;
+using Newtonsoft.Json;
+    
+ public class WikipediaApi
+ {
+        public static ApiLocations.Locations GetLocations(int limit, int kmRad, Coordinate currentCoords)
         {
             var gsradius = kmRad * 1000;
-            var coords = $"{Convert.ToString(lat)}" + "%7C" + $"{Convert.ToString(lon)}";
+            var coords = $"{Convert.ToString(currentCoords.Latitude)}" + "%7C" + $"{Convert.ToString(currentCoords.Longitude)}";
 
             if (gsradius > 10000)
             {
@@ -61,10 +23,42 @@
 
                 var json = result.Content.ReadAsStringAsync().Result;
 
-                Locations locations = JsonConvert.DeserializeObject<Locations>(json);
+                ApiLocations.Locations locations = JsonConvert.DeserializeObject<ApiLocations.Locations>(json);
 
                 return locations;
             }
         }
-    }
-}
+
+        public static HttpResponseMessage SendJson(string json)
+        {
+            using (var client = new HttpClient())
+            {
+                var apiUrl = new Uri($"https://lnqe7m0ysg.execute-api.us-east-1.amazonaws.com/Main/RoundTrip?Hello={json}");
+
+                var result = client.GetAsync(apiUrl).Result;
+
+                return result;
+            }
+        }
+
+        public static List<Location> LocationConverter(ApiLocations.Locations locations)
+        {
+            List<Location> locationList = new List<Location>();
+            
+            foreach (var location in locations.Query.Geosearch)
+            {
+                var url = $"https://en.wikipedia.org/wiki/" + $"{location.Title.Replace(" ", "_")}";
+                
+                Location loc = new Location();
+                loc.Id = location.Pageid;
+                loc.Latitude = location.Lat;
+                loc.Longitude = location.Lon;
+                loc.Title = location.Title;
+                loc.Url = url;
+                
+                locationList.Add(loc);
+            }
+            
+            return locationList;
+        }
+ }

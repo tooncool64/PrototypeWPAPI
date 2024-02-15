@@ -1,11 +1,22 @@
 ﻿namespace PrototypeWPAPI;
+using Newtonsoft.Json;
+using Geolocation;
 
 public class Helpers
 {
-    public static double MetersToMilesRadius(double meters)
+    public static string ObjectToJson(Object ob)
     {
-        var miles = meters * 0.00062137;
+        var json = JsonConvert.SerializeObject(ob);
 
-        return Math.Round(miles, 1, MidpointRounding.AwayFromZero);
+        return json;
+    }
+
+    public static string DisplayDistance(Location location, Coordinate currentCoords)
+    {
+        Coordinate locationCoords = new Coordinate(location.Latitude, location.Longitude);
+
+        double dist = GeoCalculator.GetDistance(locationCoords, currentCoords, 1);
+
+        return $"Distance: {dist} miles.";
     }
 }
