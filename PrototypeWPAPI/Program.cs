@@ -1,19 +1,24 @@
 ﻿using Geolocation;
 using PrototypeWPAPI;
 
-Coordinate currentCoords = new Coordinate(47.064175, -122.85790);
+var currentCoords = new Coordinate(47.037872, -122.900696);
 
-var locations = WikipediaApi.GetLocations(5, 10, currentCoords);
+WikipediaApi wpApi = new WikipediaApi(currentCoords, 10, 5);
 
-var locationList = WikipediaApi.LocationConverter(locations);
+var locationList = wpApi.Locations;
 
 foreach (var location in locationList)
 {
-    var json = Helpers.ObjectToJson(location);
-
-    var response = WikipediaApi.SendJson(json);
+    var response = WikimonApi.SendLocation(location);
 
     Console.WriteLine(Helpers.DisplayDistance(location, currentCoords));
     Console.WriteLine(response);
     Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+}
+
+var receivedList = WikimonApi.ReceiveLocations(5, currentCoords);
+
+foreach (var location in receivedList)
+{
+    Console.WriteLine(location.Title);
 }

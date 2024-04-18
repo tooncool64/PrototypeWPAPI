@@ -6,6 +6,6 @@ public class Location
     public double Latitude { get; set; }
     public double Longitude { get; set; }
     public string Title { get; set; }
-    public int Likes { get; set; }
+    public string Likes { get; set; }
     public string Url { get; set; }
 }
